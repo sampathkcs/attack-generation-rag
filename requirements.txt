@@ -1,0 +1,10 @@
+azure-functions
+openai
+pandas
+langchain_community
+langchain
+fastembed
+chromadb==0.3.29
+faiss-cpu
+# chromadb
+# db-sqlite3 == 3.35.0

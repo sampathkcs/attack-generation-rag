@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Attack and Mitigation Testing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 50%;
+            margin: 20px auto;
+        }
+        h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+        }
+        .response {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Generate Cyber Attacks</h2>
+        <div class="form-group">
+            <label for="example_attack">Example Attack</label>
+            <textarea id="example_attack" rows="3" placeholder="Enter an example attack..."></textarea>
+        </div>
+        <div class="form-group">
+            <label for="num_attacks">Number of Attacks</label>
+            <input type="number" id="num_attacks" value=5>
+        </div>
+        <button onclick="generateAttacks()">Generate Attacks</button>
+        <div id="generate_attack_response" class="response"></div>
+
+        <h2>Retrieve Mitigation Actions</h2>
+        <div class="form-group">
+            <label for="selected_attack">Selected Attack</label>
+            <textarea id="selected_attack" rows="3" placeholder="Enter a selected attack..."></textarea>
+        </div>
+        <button onclick="retrieveMitigation()">Retrieve Mitigation</button>
+        <div id="retrieve_mitigation_response" class="response"></div>
+    </div>
+
+    <script>
+        // URLs for Azure Function endpoints
+        const generateAttackUrl = "https://attack-generation.azurewebsites.net/api/attack_generation?code=10q-BOc6xTrwZuI3Z8gRX14qUHlk5mW0wouXFfM8aIGfAzFuRrz_5w%3D%3D";
+        const retrieveMitigationUrl = "https://attack-generation.azurewebsites.net/api/retrieve_mitigation?code=10q-BOc6xTrwZuI3Z8gRX14qUHlk5mW0wouXFfM8aIGfAzFuRrz_5w%3D%3D";
+
+        // Function to generate cyber attacks
+        function generateAttacks() {
+            const exampleAttack = document.getElementById("example_attack").value;
+            const numAttacks = document.getElementById("num_attacks").value;
+
+            const payload = {
+                "example_attack": exampleAttack,
+                "num_attacks": 5
+            };
+
+            fetch(generateAttackUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("generate_attack_response").innerText = 
+                    "Generated Attacks: " + JSON.stringify(data);
+            })
+            .catch(error => {
+                document.getElementById("generate_attack_response").innerText = 
+                    "Error: " + error;
+            });
+        }
+
+        // Function to retrieve mitigation actions
+        function retrieveMitigation() {
+            const selectedAttack = document.getElementById("selected_attack").value;
+
+            const payload = {
+                "selected_attack": selectedAttack
+            };
+
+            fetch(retrieveMitigationUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("retrieve_mitigation_response").innerText = 
+                    "Mitigation Actions: " + JSON.stringify(data);
+            })
+            .catch(error => {
+                document.getElementById("retrieve_mitigation_response").innerText = 
+                    "Error: " + error;
+            });
+        }
+    </script>
+</body>
+</html>
